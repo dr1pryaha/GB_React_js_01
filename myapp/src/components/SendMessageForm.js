@@ -3,13 +3,24 @@ import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Grid from "@mui/material/Grid";
+import Paper from "@mui/material/Paper";
+import { styled } from "@mui/material/styles";
 
-export default function SendMessageForm(props) {
+export default function SendMessageForm({ messageList, setMessagesList }) {
   const inputRef = useRef(null);
 
   useEffect(() => {
     inputRef.current?.focus();
   }, []);
+
+  const Item = styled(Paper)(({ theme }) => ({
+    backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
+    ...theme.typography.body2,
+    padding: theme.spacing(1),
+    textAlign: "center",
+    color: theme.palette.text.secondary,
+    shadows: "none",
+  }));
 
   const [inputValue, setInputValue] = useState("");
 
@@ -25,52 +36,52 @@ export default function SendMessageForm(props) {
       event.preventDefault();
       if (inputValue !== "") {
         const arr = [
-          ...props.messageList,
+          ...messageList,
           {
-            id: props.messageList.length + 1,
+            id: messageList.length + 1,
             text: inputValue,
-            author: "unknown",
+            author: "user",
           },
         ];
         setInputValue("");
-        props.setMessagesList(arr);
+        setMessagesList(arr);
       } else {
         alert("Введите текст сообщения");
       }
     },
-    [props.setMessagesList, inputValue, props.messageList]
+    [setMessagesList, inputValue, messageList]
   );
 
   return (
     <>
-      <Box
-        sx={{
-          width: 500,
-          maxWidth: "100%",
-        }}
-      >
+      <Box sx={{ flexGrow: 1 }}>
         <Grid
-          item
-          xs={6}
-          md={9}
           container
           direction="column"
           justifyContent="center"
           alignItems="center"
-          spacing={3}
+          spacing={2}
         >
-          <TextField
-            inputRef={inputRef}
-            value={inputValue}
-            onChange={handleTextAreaChange}
-            fullWidth
-            label="Текст сообщения"
-            id="fullWidth"
-          />
-          <Grid item>
-            <Button variant="contained" onClick={handleButtonClick}>
-              Отправить
-            </Button>
+          <Grid item xs={11}>
+            <Item style={{ width: "500px" }} inputRef={inputRef} elevation={0}>
+              <TextField
+                key="password"
+                autoFocus
+                value={inputValue}
+                onChange={handleTextAreaChange}
+                rows="3"
+                fullWidth
+                label="Текст сообщения"
+                id="fullWidth"
+              />
+            </Item>
+          </Grid>
+          <Grid item xs={6} md={3}>
+            <Item elevation={0}>
+              <Button variant="contained" onClick={handleButtonClick}>
+                Отправить
+              </Button>
+            </Item>
           </Grid>
         </Grid>
       </Box>

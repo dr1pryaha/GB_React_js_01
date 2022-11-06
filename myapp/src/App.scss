@@ -1,5 +1,6 @@
 .App {
   text-align: center;
+  height: 100%;
 }
 
 .App-logo {
@@ -17,7 +18,6 @@
 
 .App-header {
   background-color: #282c34;
-  min-height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -61,6 +61,10 @@ html,
 
 * {
   outline: none;
+}
+
+#root {
+  position: relative;
 }
 
 .ant-btn-circle {
@@ -168,5 +172,8 @@ html,
         font-weight: 500;
       }
     }
+  }
+  .message-item {
+    height: 540px;
   }
 }
