@@ -87,7 +87,7 @@ html,
   height: 100%;
   background-color: #fff;
   width: 1140px;
-  margin: 0 auto;
+  margin: 20px auto;
   box-shadow: 0px 0px 25px rgba(0, 0, 0, 0.04204);
 
   &__sidebar {
@@ -175,5 +175,27 @@ html,
   }
   .message-item {
     height: 540px;
+    // background-color: #8774e1;
   }
+}
+
+// .sender-message {
+//   background-color: #8774e1;
+// }
+
+// link:-webkit-any-link {
+//   text-decoration: none;
+//   color: inherit;
+//   &:hover {
+//     text-decoration: underline;
+//   }
+// }
+
+li {
+  list-style-type: none;
+}
+
+header {
+  z-index: 1;
+  margin-bottom: 10px;
 }
