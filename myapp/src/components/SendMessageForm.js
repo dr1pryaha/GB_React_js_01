@@ -6,12 +6,7 @@ import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
 import { styled } from "@mui/material/styles";
 
-export default function SendMessageForm({
-  messageList,
-  chatsList,
-  addMessageToChat,
-  setChatsList,
-}) {
+export default function SendMessageForm({ messageList, setMessagesList }) {
   const inputRef = useRef(null);
 
   useEffect(() => {
@@ -40,17 +35,21 @@ export default function SendMessageForm({
     event => {
       event.preventDefault();
       if (inputValue !== "") {
-        addMessageToChat({
-          id: messageList.length + 1,
-          text: inputValue,
-          author: "user",
-        });
+        const arr = [
+          ...messageList,
+          {
+            id: messageList.length + 1,
+            text: inputValue,
+            author: "user",
+          },
+        ];
         setInputValue("");
+        setMessagesList(arr);
       } else {
         alert("Введите текст сообщения");
       }
     },
-    [setChatsList, inputValue, messageList, chatsList]
+    [setMessagesList, inputValue, messageList]
   );
 
   return (
@@ -63,10 +62,9 @@ export default function SendMessageForm({
           alignItems="center"
           spacing={2}
         >
-          <Grid sx={{ width: "100%" }} item xs={11}>
-            <Item elevation={0}>
+          <Grid item xs={11}>
+            <Item style={{ width: "500px" }} inputRef={inputRef} elevation={0}>
               <TextField
-                inputRef={inputRef}
                 key="password"
                 autoFocus
                 value={inputValue}
@@ -78,7 +76,7 @@ export default function SendMessageForm({
               />
             </Item>
           </Grid>
-          <Grid sx={{ paddingTop: "8px" }} item xs={6} md={3}>
+          <Grid item xs={6} md={3}>
             <Item elevation={0}>
               <Button variant="contained" onClick={handleButtonClick}>
                 Отправить
