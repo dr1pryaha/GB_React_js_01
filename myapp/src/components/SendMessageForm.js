@@ -50,7 +50,7 @@ export default function SendMessageForm({
         alert("Введите текст сообщения");
       }
     },
-    [setChatsList, inputValue, messageList, chatsList]
+    [inputValue, setInputValue, messageList, addMessageToChat]
   );
 
   return (

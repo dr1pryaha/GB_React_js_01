@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useCallback } from "react";
 import { useParams } from "react-router-dom";
 import Container from "@mui/material/Container";
 import "../App.scss";
@@ -45,17 +45,20 @@ export default function Chats({ chatsList, setChatsList }) {
 
   // console.log(messageList);
 
-  const addMessageToChat = message => {
-    const newMessageList = [...messageList, message];
-    const newChatList = chatsList.map(chat => {
-      if (+chatId === chat.id) {
-        return { ...chat, messages: newMessageList };
-      } else {
-        return chat;
-      }
-    });
-    setChatsList(newChatList);
-  };
+  const addMessageToChat = useCallback(
+    message => {
+      const newMessageList = [...messageList, message];
+      const newChatList = chatsList.map(chat => {
+        if (+chatId === chat.id) {
+          return { ...chat, messages: newMessageList };
+        } else {
+          return chat;
+        }
+      });
+      setChatsList(newChatList);
+    },
+    [messageList, chatsList, setChatsList, chatId]
+  );
 
   let navigate = useNavigate();
 
@@ -63,7 +66,7 @@ export default function Chats({ chatsList, setChatsList }) {
     if (isChatMissing) {
       return navigate("/notFound");
     }
-  }, [isChatMissing]);
+  }, [isChatMissing, navigate]);
 
   useEffect(() => {
     // console.log(chatId);
@@ -81,7 +84,7 @@ export default function Chats({ chatsList, setChatsList }) {
         });
       }, 1500);
     }
-  }, [messageList]);
+  }, [messageList, addMessageToChat]);
   return (
     <Container
       maxWidth="xl"

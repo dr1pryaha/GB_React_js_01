@@ -4,6 +4,8 @@ import Profile from "./components/Profile";
 import Chats from "./components/Chats";
 import Page404 from "./components/Page404";
 import React, { useState } from "react";
+import { Provider } from "react-redux";
+import { store } from "./store";
 
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
@@ -27,23 +29,29 @@ function App() {
   ]);
 
   return (
-    <BrowserRouter>
-      <Header />
-      <Routes>
-        <Route exact path="/" element={<Home />}></Route>
-        <Route path="/profile" element={<Profile />}></Route>
-        <Route
-          path="/chats/:chatId"
-          element={<Chats chatsList={chatsList} setChatsList={setChatsList} />}
-        ></Route>
-        <Route
-          path="/chats/"
-          element={<Chats chatsList={chatsList} setChatsList={setChatsList} />}
-        ></Route>
-        <Route path="/notFound" element={<Page404 />}></Route>
-        <Route path="*" element={<Page404 />}></Route>
-      </Routes>
-    </BrowserRouter>
+    <Provider store={store}>
+      <BrowserRouter>
+        <Header />
+        <Routes>
+          <Route exact path="/" element={<Home />}></Route>
+          <Route path="/profile" element={<Profile />}></Route>
+          <Route
+            path="/chats/:chatId"
+            element={
+              <Chats chatsList={chatsList} setChatsList={setChatsList} />
+            }
+          ></Route>
+          <Route
+            path="/chats/"
+            element={
+              <Chats chatsList={chatsList} setChatsList={setChatsList} />
+            }
+          ></Route>
+          <Route path="/notFound" element={<Page404 />}></Route>
+          <Route path="*" element={<Page404 />}></Route>
+        </Routes>
+      </BrowserRouter>
+    </Provider>
   );
 }
 
