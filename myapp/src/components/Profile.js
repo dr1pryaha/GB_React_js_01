@@ -8,6 +8,7 @@
 
 import { useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import Container from "@mui/material/Container";
 
 // import { store } from "../../store/index";
 import { toggleShowName } from "../store/profile/action";
@@ -21,8 +22,8 @@ export default function Profile() {
   }, [dispatch]);
 
   return (
-    <div>
-      <h4>Profile</h4>
+    <Container maxWidth="xl">
+      <h1>Страница профиля</h1>
       <input
         type="checkbox"
         checked={showName}
@@ -31,6 +32,6 @@ export default function Profile() {
       />
       <span>Show Name</span>
       {showName && <div>{name}</div>}
-    </div>
+    </Container>
   );
 }
