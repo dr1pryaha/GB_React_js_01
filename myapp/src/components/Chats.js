@@ -22,8 +22,6 @@ export default function Chats({ chatsList, setChatsList }) {
   }));
 
   const { chatId = 1 } = useParams();
-  // console.log(useParams());
-  // console.log(chatId);
 
   let chat = chatsList.find(({ id }) => {
     return id === +chatId;
@@ -33,7 +31,6 @@ export default function Chats({ chatsList, setChatsList }) {
 
   if (isChatMissing) {
     chat = chatsList[0];
-    // redirect("/notFound");
   }
 
   const messageList = chat.messages;
