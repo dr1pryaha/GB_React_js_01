@@ -1,18 +1,65 @@
-import React, { useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import Container from "@mui/material/Container";
 import "../App.scss";
 import MessageItem from "./MessageItem";
-import MemberList from "./MemberList";
+import ChatsList from "./ChatsList";
 import SendMessageForm from "./SendMessageForm";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import Divider from "@mui/material/Divider";
 import { styled } from "@mui/material/styles";
 import Paper from "@mui/material/Paper";
+import DialogTitle from "@mui/material/DialogTitle";
+import Dialog from "@mui/material/Dialog";
+import TextField from "@mui/material/TextField";
+import Button from "@mui/material/Button";
+import ChatIcon from "@mui/icons-material/Chat";
 import { useNavigate } from "react-router-dom";
+import { addChat } from "../store/chats/action";
+import { addMessage } from "../store/messages/action";
+import { getChats } from "../store/chats/selectors";
+import { getMessages } from "../store/messages/selectors";
 
-export default function Chats({ chatsList, setChatsList }) {
+import { getChatMessages } from "../helpers";
+
+function AddChatDialog({ handleClose }) {
+  const [newChatName, setNewChatName] = useState("");
+  const handleChange = useCallback(e => setNewChatName(e.target.value));
+
+  const dispatch = useDispatch();
+  const chats = useSelector(getChats);
+
+  const onAddChat = () => {
+    dispatch(addChat(newChatName));
+    console.log(chats);
+    setNewChatName("");
+    handleClose();
+  };
+
+  const Item = styled(Paper)(({ theme }) => ({
+    backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
+    ...theme.typography.body2,
+    padding: theme.spacing(1),
+    textAlign: "center",
+    color: theme.palette.text.secondary,
+  }));
+
+  return (
+    <>
+      <DialogTitle>Please enter a name for new chat</DialogTitle>
+      <Item elevation={0}>
+        <TextField autoFocus value={newChatName} onChange={handleChange} />
+      </Item>
+      <Button onClick={onAddChat} disabled={!newChatName}>
+        Submit
+      </Button>
+    </>
+  );
+}
+
+export default function Chats() {
   const Item = styled(Paper)(({ theme }) => ({
     backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
     ...theme.typography.body2,
@@ -23,50 +70,43 @@ export default function Chats({ chatsList, setChatsList }) {
 
   const { chatId = 1 } = useParams();
 
-  let chat = chatsList.find(({ id }) => {
+  const chats = useSelector(getChats);
+  const messages = useSelector(getMessages);
+  const dispatch = useDispatch();
+
+  let chat = chats.find(({ id }) => {
     return id === +chatId;
   });
 
   let isChatMissing = !chat;
 
   if (isChatMissing) {
-    chat = chatsList[0];
+    chat = chats[0];
   }
 
-  const messageList = chat.messages;
-
-  // const [messageList, setMessagesList] = useState([]);
-  // useEffect(() => {
-  //   setMessagesList(chat.messages);
-  // });
-
-  // console.log(messageList);
+  const messageList = getChatMessages(messages, chatId);
 
   const addMessageToChat = useCallback(
     message => {
-      const newMessageList = [...messageList, message];
-      const newChatList = chatsList.map(chat => {
-        if (+chatId === chat.id) {
-          return { ...chat, messages: newMessageList };
-        } else {
-          return chat;
-        }
-      });
-      setChatsList(newChatList);
+      dispatch(addMessage(chatId, message));
     },
-    [messageList, chatsList, setChatsList, chatId]
+    [dispatch, chatId]
   );
 
-  let navigate = useNavigate();
+  // let navigate = useNavigate();
+
+  // useEffect(() => {
+  //   if (isChatMissing) {
+  //     return navigate("/notFound");
+  //   }
+  // }, [isChatMissing, navigate]);
+
+  const handleOpen = () => setVisible(true);
+  const [visible, setVisible] = useState(false);
+  const handleClose = () => setVisible(false);
 
   useEffect(() => {
-    if (isChatMissing) {
-      return navigate("/notFound");
-    }
-  }, [isChatMissing, navigate]);
-
-  useEffect(() => {
-    // console.log(chatId);
+    // console.log(messageList);
     if (
       messageList.length &&
       messageList[messageList.length - 1].author !== "robo"
@@ -90,8 +130,23 @@ export default function Chats({ chatsList, setChatsList }) {
       <Box sx={{ flexGrow: 1, height: "100%" }}>
         <Grid sx={{ height: "100%" }} container>
           <Grid sx={{ height: "100%" }} item xs={4} md={3}>
-            <MemberList chatsList={chatsList} chatId={chatId} />
+            <Container maxWidth="xl" xs={4} md={3}>
+              <Button
+                sx={{ alignItem: "center" }}
+                variant="outlined"
+                startIcon={<ChatIcon />}
+                onClick={handleOpen}
+              >
+                Add chat
+              </Button>
+            </Container>
+            <ChatsList handleOpen={handleOpen} />
           </Grid>
+
+          <Dialog open={visible} onClose={handleClose}>
+            <AddChatDialog handleClose={handleClose} />
+          </Dialog>
+
           <Grid sx={{ height: "100%" }} item xs={8} md={9}>
             <Item
               sx={{
@@ -111,15 +166,14 @@ export default function Chats({ chatsList, setChatsList }) {
                 />
               ))}
             </Item>
-            <Divider />
-            <Item elevation={0}>
-              <SendMessageForm
-                chatsList={chatsList}
-                addMessageToChat={addMessageToChat}
-                messageList={messageList}
-                setChatsList={setChatsList}
-              />
-            </Item>
+            {!isChatMissing && (
+              <>
+                <Divider />
+                <Item elevation={0}>
+                  <SendMessageForm />
+                </Item>
+              </>
+            )}
           </Grid>
         </Grid>
       </Box>

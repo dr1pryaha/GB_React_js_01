@@ -5,13 +5,21 @@ import TextField from "@mui/material/TextField";
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
 import { styled } from "@mui/material/styles";
+import { useSelector, useDispatch } from "react-redux";
+import { addMessage } from "../store/messages/action";
+import { useParams } from "react-router-dom";
+import { getChatMessages } from "../helpers";
+import { getMessages } from "../store/messages/selectors";
+import { getProfile } from "../store/profile/selectors";
 
-export default function SendMessageForm({
-  messageList,
-  chatsList,
-  addMessageToChat,
-  setChatsList,
-}) {
+export default function SendMessageForm() {
+  const messages = useSelector(getMessages);
+  const profileName = useSelector(getProfile);
+
+  const { chatId = 1 } = useParams();
+
+  const dispatch = useDispatch();
+
   const inputRef = useRef(null);
 
   useEffect(() => {
@@ -40,17 +48,19 @@ export default function SendMessageForm({
     event => {
       event.preventDefault();
       if (inputValue !== "") {
-        addMessageToChat({
-          id: messageList.length + 1,
-          text: inputValue,
-          author: "user",
-        });
+        dispatch(
+          addMessage(chatId, {
+            id: getChatMessages(messages, chatId).length + 1,
+            text: inputValue,
+            author: profileName,
+          })
+        );
         setInputValue("");
       } else {
         alert("Введите текст сообщения");
       }
     },
-    [inputValue, setInputValue, messageList, addMessageToChat]
+    [inputValue, setInputValue, messages, chatId, dispatch, profileName]
   );
 
   return (
