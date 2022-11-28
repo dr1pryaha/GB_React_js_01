@@ -6,11 +6,11 @@ import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
 import { styled } from "@mui/material/styles";
 import { useSelector, useDispatch } from "react-redux";
-import { addMessage } from "../store/messages/action";
 import { useParams } from "react-router-dom";
 import { getChatMessages } from "../helpers";
 import { getMessages } from "../store/messages/selectors";
 import { getProfile } from "../store/profile/selectors";
+import { addRoboMessageWithThunk } from "../middlewares/botanswer";
 
 export default function SendMessageForm() {
   const messages = useSelector(getMessages);
@@ -49,7 +49,7 @@ export default function SendMessageForm() {
       event.preventDefault();
       if (inputValue !== "") {
         dispatch(
-          addMessage(chatId, {
+          addRoboMessageWithThunk(chatId, {
             id: getChatMessages(messages, chatId).length + 1,
             text: inputValue,
             author: profileName,
