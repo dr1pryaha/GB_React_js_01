@@ -7,10 +7,11 @@ import SendIcon from "@mui/icons-material/Send";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import { changeName } from "../store/profile/action";
+import { getProfile } from "../store/profile/selectors";
 
 export default function Profile() {
   const dispatch = useDispatch();
-  const { name } = useSelector(state => state.profile);
+  const profileName = useSelector(getProfile);
   const [value, setValue] = useState("");
 
   const handleChange = useCallback(e => {
@@ -53,7 +54,7 @@ export default function Profile() {
           </Grid>
         </Grid>
       </Box>
-      {<div>{name}</div>}
+      {<div>{profileName}</div>}
     </Container>
   );
 }
