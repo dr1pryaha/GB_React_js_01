@@ -18,6 +18,7 @@ const pages = [
   { name: "Главная", url: "/" },
   { name: "Страница профиля", url: "/profile" },
   { name: "Чаты", url: "/chats/1" },
+  { name: "Страница запроса", url: "/gists" },
 ];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
