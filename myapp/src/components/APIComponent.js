@@ -2,11 +2,11 @@ import { CircularProgress } from "@mui/material";
 import Container from "@mui/material/Container";
 import { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllGists } from "../middlewares/APIThunk";
+import { getAllGists, STATUSES } from "../middlewares/APIThunk";
 import {
   selectGists,
-  selectGistsError,
   selectGistsLoading,
+  selectGistsStatus,
 } from "../store/gists/selectors";
 
 export const API_URL_PUBLIC = "https://api.github.com/gists/public";
@@ -74,14 +74,16 @@ export const APIComponent = () => {
   const dispatch = useDispatch();
   const gists = useSelector(selectGists);
 
-  const error = useSelector(selectGistsError);
   const loading = useSelector(selectGistsLoading);
-  const requestGists = () => {
+  const status = useSelector(selectGistsStatus);
+  const requestGists = useCallback(() => {
     dispatch(getAllGists());
-  };
+  }, [getAllGists]);
+
   useEffect(() => {
     requestGists();
-  }, []);
+  }, [requestGists]);
+
   const renderGist = useCallback(
     gist => <li key={gist.id}>{gist.description}</li>,
     []
@@ -89,7 +91,7 @@ export const APIComponent = () => {
   if (loading) {
     return <CircularProgress />;
   }
-  if (error) {
+  if (status === STATUSES.FAILURE) {
     return (
       <>
         <h3>Error</h3>
