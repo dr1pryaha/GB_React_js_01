@@ -5,16 +5,18 @@ import ListItemText from "@mui/material/ListItemText";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
 import Avatar from "@mui/material/Avatar";
 import Typography from "@mui/material/Typography";
-import { Link } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import React, { useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
+import ClearIcon from "@mui/icons-material/Clear";
 import Stack from "@mui/material/Stack";
 import { getChatLastMessage } from "../helpers";
 import { removeChat } from "../store/chats/action";
 import { getMessages } from "../store/messages/selectors";
 import { getChats } from "../store/chats/selectors";
+import { deleteMessageWithFirebase } from "../store/messages/action";
 
 function ChatsListItem({ chatId, chatName, messages, handleOpen }) {
   const chatLastMessage = getChatLastMessage(messages, chatId);
@@ -23,50 +25,62 @@ function ChatsListItem({ chatId, chatName, messages, handleOpen }) {
   const handleClickRemove = useCallback(
     e => {
       e.stopPropagation();
-      dispatch(removeChat(chatId));
+      dispatch(deleteMessageWithFirebase(chatId));
     },
     [dispatch, chatId]
   );
 
+  const params = useParams();
+  const paramsValue = +params.chatId;
+  const navigate = useNavigate();
+
+  const handleClickChat = useCallback(() => navigate(`/chats/${chatId}`));
+
   return (
     <React.Fragment key={chatId}>
-      <Link
+      {/* <Link
         style={{ color: "inherit", textDecoration: "none" }}
         to={`/chats/${chatId}`}
+      > */}
+      <ListItem
+        sx={{ cursor: "pointer" }}
+        onClick={handleClickChat}
+        selected={chatId === paramsValue}
+        alignItems="flex-start"
       >
-        <ListItem alignItems="flex-start">
-          <ListItemAvatar>
-            <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
-          </ListItemAvatar>
-          <ListItemText
-            primary={chatName}
-            secondary={
-              chatLastMessage && (
-                <>
-                  <Typography
-                    sx={{ display: "inline" }}
-                    component="span"
-                    variant="body2"
-                    color="text.primary"
-                  >
-                    {chatLastMessage.author}
-                  </Typography>
-                  {` — ${chatLastMessage.text}`}
-                </>
-              )
-            }
-          />
-        </ListItem>
-      </Link>
-      <Stack direction="row" alignItems="center" spacing={1}>
-        <IconButton
-          onClick={handleClickRemove}
-          aria-label="delete"
-          size="small"
-        >
-          <DeleteIcon fontSize="small" />
-        </IconButton>
-      </Stack>
+        <ListItemAvatar>
+          <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
+        </ListItemAvatar>
+        <ListItemText
+          primary={chatName}
+          secondary={
+            chatLastMessage && (
+              <>
+                <Typography
+                  sx={{ display: "inline" }}
+                  component="span"
+                  variant="body2"
+                  color="text.primary"
+                >
+                  {chatLastMessage.author}
+                </Typography>
+                {` — ${chatLastMessage.text}`}
+              </>
+            )
+          }
+        />
+        <Stack direction="row" alignItems="center" spacing={1}>
+          <IconButton
+            onClick={handleClickRemove}
+            aria-label="delete"
+            size="small"
+          >
+            <ClearIcon fontSize="small" />
+          </IconButton>
+        </Stack>
+      </ListItem>
+      {/* </Link> */}
+
       <Divider variant="inset" component="li" />
     </React.Fragment>
   );

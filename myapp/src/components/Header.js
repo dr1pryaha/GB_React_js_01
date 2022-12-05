@@ -13,14 +13,28 @@ import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import { Link } from "react-router-dom";
+import { signOut } from "firebase/auth";
+import { auth } from "../services/firebase";
 
 const pages = [
   { name: "Главная", url: "/" },
   { name: "Страница профиля", url: "/profile" },
   { name: "Чаты", url: "/chats/1" },
   { name: "Страница запроса", url: "/gists" },
+  { name: "Регистрация", url: "/signup" },
+  { name: "Логин", url: "/login" },
 ];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
+
+const logout = () => {
+  signOut(auth)
+    .then(() => {
+      // Sign-out successful.
+    })
+    .catch(error => {
+      // An error happened.
+    });
+};
 
 function ResponsiveAppBar() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -158,7 +172,10 @@ function ResponsiveAppBar() {
               onClose={handleCloseUserMenu}
             >
               {settings.map(setting => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
+                <MenuItem
+                  key={setting}
+                  onClick={setting === "Logout" ? logout : handleCloseUserMenu}
+                >
                   <Typography textAlign="center">{setting}</Typography>
                 </MenuItem>
               ))}

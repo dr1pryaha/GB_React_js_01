@@ -7,19 +7,32 @@ import Paper from "@mui/material/Paper";
 import DialogTitle from "@mui/material/DialogTitle";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
+import { useNavigate } from "react-router-dom";
+import { getLastChatId } from "../helpers";
 
 export function AddChatDialog({ handleClose }) {
   const [newChatName, setNewChatName] = useState("");
-  const handleChange = useCallback(e => setNewChatName(e.target.value));
+  const handleChange = useCallback(
+    e => setNewChatName(e.target.value),
+    [setNewChatName]
+  );
 
   const dispatch = useDispatch();
   const chats = useSelector(getChats);
+  const navigate = useNavigate();
 
   const onAddChat = () => {
-    dispatch(addChat(newChatName));
+    const newChatId = chats.length + 1;
+    dispatch(
+      addChat({
+        id: newChatId,
+        name: newChatName,
+      })
+    );
     console.log(chats);
     setNewChatName("");
     handleClose();
+    navigate(`/chats/${newChatId}`);
   };
 
   const Item = styled(Paper)(({ theme }) => ({

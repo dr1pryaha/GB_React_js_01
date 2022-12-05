@@ -11,6 +11,7 @@ import { getChatMessages } from "../helpers";
 import { getMessages } from "../store/messages/selectors";
 import { getProfile } from "../store/profile/selectors";
 import { addRoboMessageWithThunk } from "../middlewares/botanswer";
+import { initMessageTracking } from "../store/messages/action";
 
 export default function SendMessageForm() {
   const messages = useSelector(getMessages);
@@ -21,10 +22,11 @@ export default function SendMessageForm() {
   const dispatch = useDispatch();
 
   const inputRef = useRef(null);
-
   useEffect(() => {
+    // dispatch(initMessageTracking());
+
     inputRef.current?.focus();
-  }, []);
+  }, [dispatch]);
 
   const Item = styled(Paper)(({ theme }) => ({
     backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -50,7 +52,7 @@ export default function SendMessageForm() {
       if (inputValue !== "") {
         dispatch(
           addRoboMessageWithThunk(chatId, {
-            id: getChatMessages(messages, chatId).length + 1,
+            id: `${chatId}-${Date.now()}`,
             text: inputValue,
             author: profileName,
           })
