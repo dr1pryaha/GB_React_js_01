@@ -8,6 +8,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 import { store, persistor } from "./store";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ChatsContainer } from "./containers/ChatsContainer";
+import { APIComponent } from "./components/APIComponent";
 
 function App() {
   // const [chatsList, setChatsList] = useState([
@@ -39,6 +40,7 @@ function App() {
             <Route path="/chats/:chatId" element={<ChatsContainer />}></Route>
             <Route path="/chats/" element={<ChatsContainer />}></Route>
             <Route path="/notFound" element={<Page404 />}></Route>
+            <Route path="/gists" element={<APIComponent />}></Route>
             <Route path="*" element={<Page404 />}></Route>
           </Routes>
         </BrowserRouter>
