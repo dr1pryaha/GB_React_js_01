@@ -85,7 +85,7 @@ function ResponsiveAppBar() {
                   to={url}
                   key={name}
                   onClick={handleCloseNavMenu}
-                  sx={{ my: 2, color: "white", display: "block" }}
+                  sx={{ my: 2, color: "black", display: "block" }}
                 >
                   {name}
                 </Button>
