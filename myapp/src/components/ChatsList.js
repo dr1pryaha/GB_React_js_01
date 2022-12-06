@@ -80,6 +80,7 @@ export default function ChatsList({ handleOpen }) {
     <List>
       {chats.map(({ id, name }) => (
         <ChatsListItem
+          key={id}
           chatId={id}
           chatName={name}
           messages={messages}

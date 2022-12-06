@@ -1,8 +1,25 @@
 import { configureStore } from "@reduxjs/toolkit";
-import { combineReducers } from "redux";
+import { combineReducers, applyMiddleware } from "redux";
 import { profileReducer } from "../store/profile/reducer";
 import { chatsReducer } from "../store/chats/reducer";
 import { messagesReducer } from "../store/messages/reducer";
+import thunk from "redux-thunk";
+import {
+  persistStore,
+  persistReducer,
+  FLUSH,
+  REHYDRATE,
+  PAUSE,
+  PERSIST,
+  PURGE,
+  REGISTER,
+} from "redux-persist";
+import storage from "redux-persist/lib/storage";
+
+const persistConfig = {
+  key: "root",
+  storage,
+};
 
 const rootReducer = combineReducers({
   chats: chatsReducer,
@@ -10,4 +27,16 @@ const rootReducer = combineReducers({
   messages: messagesReducer,
 });
 
-export const store = configureStore({ reducer: rootReducer });
+const persistedReducer = persistReducer(persistConfig, rootReducer);
+
+export const store = configureStore({
+  reducer: persistedReducer,
+  middleware: getDefaultMiddleware =>
+    getDefaultMiddleware({
+      serializableCheck: {
+        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+      },
+    }),
+});
+
+export const persistor = persistStore(store);

@@ -1,13 +1,13 @@
 import Header from "./components/Header";
 import Home from "./components/Home";
 import Profile from "./components/Profile";
-import Chats from "./components/Chats";
 import Page404 from "./components/Page404";
-import React, { useState } from "react";
 import { Provider } from "react-redux";
-import { store } from "./store";
-
+import { PersistGate } from "redux-persist/integration/react";
+import CircularProgress from "@mui/material/CircularProgress";
+import { store, persistor } from "./store";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { ChatsContainer } from "./containers/ChatsContainer";
 
 function App() {
   // const [chatsList, setChatsList] = useState([
@@ -30,17 +30,19 @@ function App() {
 
   return (
     <Provider store={store}>
-      <BrowserRouter>
-        <Header />
-        <Routes>
-          <Route exact path="/" element={<Home />}></Route>
-          <Route path="/profile" element={<Profile />}></Route>
-          <Route path="/chats/:chatId" element={<Chats />}></Route>
-          <Route path="/chats/" element={<Chats />}></Route>
-          <Route path="/notFound" element={<Page404 />}></Route>
-          <Route path="*" element={<Page404 />}></Route>
-        </Routes>
-      </BrowserRouter>
+      <PersistGate persistor={persistor} loading={<CircularProgress />}>
+        <BrowserRouter>
+          <Header />
+          <Routes>
+            <Route exact path="/" element={<Home />}></Route>
+            <Route path="/profile" element={<Profile />}></Route>
+            <Route path="/chats/:chatId" element={<ChatsContainer />}></Route>
+            <Route path="/chats/" element={<ChatsContainer />}></Route>
+            <Route path="/notFound" element={<Page404 />}></Route>
+            <Route path="*" element={<Page404 />}></Route>
+          </Routes>
+        </BrowserRouter>
+      </PersistGate>
     </Provider>
   );
 }
