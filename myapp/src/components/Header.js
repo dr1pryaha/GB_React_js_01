@@ -1,5 +1,5 @@
 import logo from "../logo.svg";
-import * as React from "react";
+import React, { useCallback } from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -25,20 +25,26 @@ function ResponsiveAppBar() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
-  const handleOpenNavMenu = event => {
-    setAnchorElNav(event.currentTarget);
-  };
-  const handleOpenUserMenu = event => {
-    setAnchorElUser(event.currentTarget);
-  };
+  const handleOpenNavMenu = useCallback(
+    event => {
+      setAnchorElNav(event.currentTarget);
+    },
+    [setAnchorElNav]
+  );
+  const handleOpenUserMenu = useCallback(
+    event => {
+      setAnchorElUser(event.currentTarget);
+    },
+    [setAnchorElUser]
+  );
 
-  const handleCloseNavMenu = () => {
+  const handleCloseNavMenu = useCallback(() => {
     setAnchorElNav(null);
-  };
+  }, [setAnchorElNav]);
 
-  const handleCloseUserMenu = () => {
+  const handleCloseUserMenu = useCallback(() => {
     setAnchorElUser(null);
-  };
+  }, [setAnchorElUser]);
 
   return (
     <AppBar position="static">

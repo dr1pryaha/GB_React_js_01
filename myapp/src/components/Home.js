@@ -1,7 +1,9 @@
+import Container from "@mui/material/Container";
+
 export default function Home(props) {
   return (
-    <div>
+    <Container maxWidth="xl">
       <h1>Главная страница</h1>
-    </div>
+    </Container>
   );
 }
