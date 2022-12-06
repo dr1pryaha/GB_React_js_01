@@ -16,6 +16,7 @@ import {
 } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import gistsReducer from "./gists/reducer";
+import { initMessageTracking } from "./messages/action";
 
 const persistConfig = {
   key: "root",
@@ -40,5 +41,7 @@ export const store = configureStore({
       },
     }),
 });
+
+store.dispatch(initMessageTracking());
 
 export const persistor = persistStore(store);

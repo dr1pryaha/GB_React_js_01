@@ -22,7 +22,10 @@ export default function MessageItem(props) {
             {props.text}
           </ReceiverMessage>
         ) : (
-          <SenderMessage key={props.id} avatar={<Avatar>{profileName}</Avatar>}>
+          <SenderMessage
+            key={props.id}
+            avatar={<Avatar>{profileName[0]}</Avatar>}
+          >
             {props.text}
           </SenderMessage>
         )}
