@@ -1,9 +1,8 @@
 import { configureStore } from "@reduxjs/toolkit";
-import { combineReducers, applyMiddleware } from "redux";
+import { combineReducers } from "redux";
 import { profileReducer } from "../store/profile/reducer";
 import { chatsReducer } from "../store/chats/reducer";
 import { messagesReducer } from "../store/messages/reducer";
-import thunk from "redux-thunk";
 import {
   persistStore,
   persistReducer,

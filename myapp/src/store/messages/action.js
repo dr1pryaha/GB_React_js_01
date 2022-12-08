@@ -1,5 +1,5 @@
 import { getDatabase, onValue, ref, remove, set } from "firebase/database";
-import { db } from "../../services/firebase";
+import { db } from "../../../services/firebase";
 import { removeChat } from "../chats/action";
 
 export const ADD_MESSAGE = "MESSAGES::ADD_MESSAGE";

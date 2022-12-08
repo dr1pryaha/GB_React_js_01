@@ -1,5 +1,4 @@
-import { useEffect, useState } from "react";
-// import firebase from "firebase/compat/app";
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
@@ -12,8 +11,8 @@ import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../services/firebase";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../../services/firebase";
 
 export const Login = () => {
   const [email, setEmail] = useState("");
@@ -37,37 +36,6 @@ export const Login = () => {
     }
   };
   return (
-    // <div>
-    //   <form onSubmit={handleSubmit}>
-    //     <p>Fill in the form below to login to your account.</p>
-    //     <div>
-    //       <input
-    //         placeholder="Email"
-    //         name="email"
-    //         type="email"
-    //         onChange={handleEmailChange}
-    //         value={email}
-    //       />
-    //     </div>
-    //     <div>
-    //       <input
-    //         placeholder="Password"
-    //         name="password"
-    //         onChange={handlePassChange}
-    //         value={password}
-    //         type="password"
-    //       />
-    //     </div>
-    //     <div>
-    //       {error && <p>{error}</p>}
-    //       <button type="submit">Login</button>
-    //     </div>
-    //     <hr />
-    //     <p>
-    //       Don't have an account? <Link to="/signup">Sign up</Link>
-    //     </p>
-    //   </form>
-    // </div>
     <Container component="main" maxWidth="xs">
       <CssBaseline />
       <Box

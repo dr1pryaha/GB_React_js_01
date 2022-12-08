@@ -14,9 +14,9 @@ import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import { Link } from "react-router-dom";
 import { signOut } from "firebase/auth";
-import { auth } from "../services/firebase";
+import { auth } from "../../services/firebase";
 
-const pages = [
+export const pages = [
   { name: "Главная", url: "/" },
   { name: "Страница профиля", url: "/profile" },
   { name: "Чаты", url: "/chats/1" },

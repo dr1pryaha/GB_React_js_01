@@ -8,7 +8,6 @@ import DialogTitle from "@mui/material/DialogTitle";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import { useNavigate } from "react-router-dom";
-import { getLastChatId } from "../helpers";
 
 export function AddChatDialog({ handleClose }) {
   const [newChatName, setNewChatName] = useState("");
