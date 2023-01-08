@@ -1,15 +1,10 @@
 import { render, screen } from "@testing-library/react";
-import { pages } from "./components/Header";
-import Home from "./components/Home";
+import Home from "../components/Home";
 
 test("renders Главная страница", () => {
   render(<Home />);
   const linkElement = screen.getByText(/Главная страница/i);
   expect(linkElement).toBeInTheDocument();
-});
-
-test("returns property from pages", () => {
-  expect(pages[0]).toHaveProperty("name");
 });
 
 // describe("formatTimeStrings tests", () => {

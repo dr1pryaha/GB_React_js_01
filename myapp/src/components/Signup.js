@@ -1,5 +1,4 @@
 import { useState } from "react";
-// import firebase from "firebase/compat/app";
 import { Link } from "react-router-dom";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";

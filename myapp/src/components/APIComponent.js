@@ -78,7 +78,7 @@ export const APIComponent = () => {
   const status = useSelector(selectGistsStatus);
   const requestGists = useCallback(() => {
     dispatch(getAllGists());
-  }, [getAllGists]);
+  }, [dispatch]);
 
   useEffect(() => {
     requestGists();

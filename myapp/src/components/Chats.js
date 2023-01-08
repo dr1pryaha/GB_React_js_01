@@ -28,7 +28,6 @@ export default function Chats({
     textAlign: "center",
     color: theme.palette.text.secondary,
   }));
-  // console.log(messageList);
 
   return (
     <Container

@@ -7,14 +7,10 @@ import Paper from "@mui/material/Paper";
 import { styled } from "@mui/material/styles";
 import { useSelector, useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
-import { getChatMessages } from "../helpers";
-import { getMessages } from "../store/messages/selectors";
 import { getProfile } from "../store/profile/selectors";
 import { addRoboMessageWithThunk } from "../middlewares/botanswer";
-import { initMessageTracking } from "../store/messages/action";
 
 export default function SendMessageForm() {
-  const messages = useSelector(getMessages);
   const profileName = useSelector(getProfile);
 
   const { chatId = 1 } = useParams();
@@ -23,8 +19,6 @@ export default function SendMessageForm() {
 
   const inputRef = useRef(null);
   useEffect(() => {
-    // dispatch(initMessageTracking());
-
     inputRef.current?.focus();
   }, [dispatch]);
 
@@ -62,7 +56,7 @@ export default function SendMessageForm() {
         alert("Введите текст сообщения");
       }
     },
-    [inputValue, setInputValue, messages, chatId, dispatch, profileName]
+    [inputValue, setInputValue, chatId, dispatch, profileName]
   );
 
   return (
@@ -78,6 +72,7 @@ export default function SendMessageForm() {
           <Grid sx={{ width: "100%" }} item xs={11}>
             <Item elevation={0}>
               <TextField
+                type="text"
                 inputRef={inputRef}
                 key="password"
                 autoFocus
